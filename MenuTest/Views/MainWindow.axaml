@@ -1,0 +1,87 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MenuTest.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MenuTest.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="MenuTest">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Window.Styles>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+    </Window.Styles>
+   <SplitView
+       IsPaneOpen="{Binding IsOpenPane,Mode=TwoWay}"
+       OpenPaneLength="300"
+       CompactPaneLength="67"
+       PaneBackground="Transparent"
+       DisplayMode="CompactOverlay">
+       <SplitView.Pane>
+                 <Border
+                  CornerRadius="20"
+                  Background="#17181C">
+                     <DockPanel>
+                         <ToggleButton IsChecked="{Binding IsOpenPane}" HorizontalAlignment="Center" DockPanel.Dock="Top" Foreground="White" Background="Transparent" Margin="5">
+                           <ToggleButton.Styles>
+                             <Style Selector="ToggleButton:checked /template/ ContentPresenter">
+                               <Setter Property="Background" Value="Transparent"/>
+                             </Style>
+                             <Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
+                               <Setter Property="Foreground" Value="#2070E9"/>
+                             </Style>
+                           </ToggleButton.Styles>
+                             <avalonia:MaterialIcon Width="35" Height="35" Kind="Menu"></avalonia:MaterialIcon>
+                         </ToggleButton>
+                       <Border IsVisible="{Binding !IsOpenPane}" 
+                               CornerRadius="10" HorizontalAlignment="Center" 
+                       Width="15" Height="2" Background="White" DockPanel.Dock="Top"/>
+                         <TextBlock DockPanel.Dock="Top" IsVisible="{Binding IsOpenPane}" 
+                                    Text="Navigation" Foreground="White" FontWeight="Light" 
+                       FontSize="12" Margin="10,0"/>
+                         <ListBox
+                             Padding="0"
+                             DockPanel.Dock="Bottom"
+                             SelectedItem="{Binding SelectedMenuElement}"
+                             Margin="10"
+                             ItemsSource="{Binding MenuElements}">
+                           <ListBox.Styles>
+                             <Style Selector="ListBoxItem">
+                               <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                               <Setter Property="CornerRadius" Value="5"/>
+                               <Setter Property="Foreground" Value="#616164"/>
+                             </Style>
+                             <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                               <Setter Property="Foreground" Value="White"/>
+                             </Style>
+                             <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                               <Setter Property="Background" Value="#2070E9"/>
+                               <Setter Property="Foreground" Value="White"/>
+                             </Style>
+                           </ListBox.Styles>
+                             <ListBox.ItemTemplate>
+                                 <DataTemplate>
+                                     <StackPanel Spacing="15" Orientation="Horizontal">
+                                         <avalonia:MaterialIcon Height="25" Width="25" Kind="{Binding Kind}"/>
+                                         <TextBlock FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Title}"></TextBlock>
+                                     </StackPanel>
+                                 </DataTemplate>
+                             </ListBox.ItemTemplate>
+                         </ListBox>
+                     </DockPanel>
+                 </Border>
+       </SplitView.Pane>
+	   <ContentControl Content="{Binding SelectedMenuElement.ViewModel}"/>
+   </SplitView>
+
+</Window>
